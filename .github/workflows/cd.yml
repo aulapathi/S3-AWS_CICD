@@ -14,10 +14,12 @@ jobs:
     environment: production
 
     steps:
-      - name: Download Build Artifact
+      - name: Download Build Artifact from CI
         uses: actions/download-artifact@v4
         with:
           name: angular-dist
+          run-id: ${{ github.event.workflow_run.id }}
+          repository: ${{ github.repository }}
           path: .
 
       - name: Configure AWS Credentials
