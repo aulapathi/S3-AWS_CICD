@@ -1,4 +1,4 @@
-name: CD Pipeline - Deploy to AWS S3
+name: CD Pipeline - Deploy Angular to AWS S3
 
 on:
   workflow_run:
@@ -30,4 +30,3 @@ jobs:
       - name: Deploy to S3
         run: |
           aws s3 sync . s3://${{ secrets.S3_BUCKET }} --delete
-``
