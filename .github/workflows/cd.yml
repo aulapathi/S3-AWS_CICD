@@ -20,7 +20,7 @@ jobs:
           name: angular-dist
           run-id: ${{ github.event.workflow_run.id }}
           repository: ${{ github.repository }}
-          path: .
+          path: exampleCICD/dist/exampleCICD/browser
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
