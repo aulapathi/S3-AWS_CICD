@@ -9,7 +9,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build Job
 
     steps:
       - name: Checkout Source Code
@@ -23,14 +22,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci --prefix exampleCICD
 
-      - name: Build Angular App
+      - name: Build Angular Application
         run: npm run build --prefix exampleCICD -- --configuration production
 
-      - name: Debug dist output
-        run: ls -R exampleCICD/dist
+      # ✅ HARD PROOF
+      - name: Show dist contents
+        run: |
+          echo "===== dist tree ====="
+          find exampleCICD/dist -type f | head -50
 
+      # ✅ GUARANTEED ARTIFACT (never empty)
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: angular-dist
-          path: exampleCICD/dist/exampleCICD
+          path: exampleCICD/dist
