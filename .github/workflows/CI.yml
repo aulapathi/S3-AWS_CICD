@@ -26,8 +26,11 @@ jobs:
       - name: Build Angular App
         run: npm run build --prefix exampleCICD -- --configuration production
 
+      - name: Verify dist folder
+        run: ls -R exampleCICD/dist
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: angular-dist
-          path: exampleCICD/dist/exampleCICD/browser
+          path: exampleCICD/dist/example-cicd/browser
