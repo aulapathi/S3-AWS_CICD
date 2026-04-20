@@ -22,21 +22,13 @@ jobs:
       - name: Build Angular app
         run: npm run build --prefix exampleCICD -- --configuration production
 
-      # ✅ HARD PROOF STEP
-      - name: Show dist output
-        run: |
-          echo "=== exampleCICD/dist ==="
-          find exampleCICD/dist -type f | head -50
+      # ✅ Debug proof (optional but useful)
+      - name: Verify build output
+        run: ls -R exampleCICD/dist
 
-      # ✅ ZIP THE BUILD OUTPUT (NO AMBIGUITY)
-      - name: Create deploy package
-        run: |
-          mkdir deploy
-          cp -r exampleCICD/dist/* deploy/
-
-      # ✅ UPLOAD ARTIFACT (GUARANTEED)
+      # ✅ CORRECT artifact path based on angular.json
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: angular-dist
-          path: deploy
+          path: exampleCICD/dist/exampleCICD/browser
