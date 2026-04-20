@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       ci_run_id:
-        description: "CI run ID to deploy (from CI pipeline)"
+        description: "CI run ID that produced the angular-dist artifact"
         required: true
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
           name: angular-dist
           run-id: ${{ inputs.ci_run_id }}
           repository: ${{ github.repository }}
-          path: .
+          path: deploy
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -31,4 +31,4 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync . s3://${{ secrets.S3_BUCKET }} --delete
+          aws s3 sync deploy s3://${{ secrets.S3_BUCKET }} --delete
