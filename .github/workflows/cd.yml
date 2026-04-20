@@ -1,28 +1,28 @@
-name: CD Pipeline - Manual Deploy to AWS S3
+name: CD Pipeline - Deploy to AWS S3
 
 on:
-  workflow_dispatch:
-    inputs:
-      ci_run_id:
-        description: "CI run ID that produced the angular-dist artifact"
-        required: true
+  workflow_run:
+    workflows:
+      - CI Pipeline - Angular
+    types:
+      - completed
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    name: Deploy Job
     environment: production
 
     steps:
-      - name: Download Artifact from CI
+      - name: Download artifact from CI
         uses: actions/download-artifact@v4
         with:
           name: angular-dist
-          run-id: ${{ inputs.ci_run_id }}
+          run-id: ${{ github.event.workflow_run.id }}
           repository: ${{ github.repository }}
           path: deploy
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
